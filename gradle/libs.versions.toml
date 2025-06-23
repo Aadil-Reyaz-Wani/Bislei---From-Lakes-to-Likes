@@ -29,6 +29,7 @@ playServicesLocation = "21.3.0"
 mediationTestSuite = "3.0.0"
 runtime = "1.8.1"
 runtimeLivedata = "1.8.1"
+storage = "1.5.0"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -66,6 +67,7 @@ firebase-storage = { group = "com.google.firebase", name = "firebase-storage", v
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 mediation-test-suite = { group = "com.google.android.ads", name = "mediation-test-suite", version.ref = "mediationTestSuite" }
 play-services-maps-v1700 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
+androidx-storage = { group = "androidx.test.services", name = "storage", version.ref = "storage" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

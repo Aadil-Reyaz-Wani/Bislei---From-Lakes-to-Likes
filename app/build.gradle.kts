@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
+    id("dagger.hilt.android.plugin") // Added Hilt plugin
+    id("org.jetbrains.kotlin.kapt") // Required for Hilt compiler
 }
 
 // Load the API key from apikey.properties
@@ -29,7 +31,6 @@ android {
 
         // Inject the MAPS_API_KEY into the manifest
         manifestPlaceholders["MAPS_API_KEY"] = apiKeyProperties.getProperty("MAPS_API_KEY")
-
     }
 
     configurations.all {
@@ -97,6 +98,11 @@ dependencies {
     // Icons & Animations
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.animation)
+    implementation(libs.androidx.storage)
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.48")
 
     // Testing
     testImplementation(libs.junit)
@@ -107,8 +113,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation (libs.material3)
+    implementation(libs.material3)
+    implementation(libs.play.services.maps.v1700)
+    implementation(libs.play.services.location.v1700)
 
-    implementation (libs.play.services.maps.v1700) // or the latest version
-    implementation (libs.play.services.location.v1700) // for location services
 }

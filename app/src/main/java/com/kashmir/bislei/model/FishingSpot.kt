@@ -9,5 +9,7 @@ data class FishingSpot(
     val bestFishingLocationsNearby: List<String> = emptyList(),
     val fishTypes: List<String> = emptyList(),
     val imageUrls: List<String> = emptyList(),
-    val hotspotCount: Int = 0 // New field for dummy data
+    val hotspotCount: Int = 0
 )
+
+

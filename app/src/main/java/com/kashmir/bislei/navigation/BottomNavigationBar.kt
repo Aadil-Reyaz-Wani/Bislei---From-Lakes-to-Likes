@@ -15,6 +15,7 @@ fun BottomNavigationBar(navController: NavController) {
         BottomNavItem.Ranking,
         BottomNavItem.Profile
     )
+
     NavigationBar {
         val navBackStackEntry = navController.currentBackStackEntryAsState().value
         val currentRoute = navBackStackEntry?.destination?.route
@@ -26,7 +27,13 @@ fun BottomNavigationBar(navController: NavController) {
                 selected = currentRoute == item.route,
                 onClick = {
                     if (currentRoute != item.route) {
-                        navController.navigate(item.route)
+                        navController.navigate(item.route) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     }
                 }
             )
