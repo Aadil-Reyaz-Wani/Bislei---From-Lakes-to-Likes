@@ -11,8 +11,8 @@ fun BottomNavigationBar(navController: NavController) {
     val items = listOf(
         BottomNavItem.Home,
         BottomNavItem.Explore,
+        BottomNavItem.Upload,
         BottomNavItem.Identify,
-        BottomNavItem.Ranking,
         BottomNavItem.Profile
     )
 

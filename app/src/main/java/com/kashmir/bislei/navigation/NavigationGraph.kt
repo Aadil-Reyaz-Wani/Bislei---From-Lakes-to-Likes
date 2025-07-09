@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.kashmir.bislei.navigation.screenroutes.Screens
+import com.kashmir.bislei.navigation.screenroutes.AuthScreens
 import com.kashmir.bislei.screens.*
 import com.kashmir.bislei.screens.authScreens.LoginScreen
 import com.kashmir.bislei.screens.authScreens.RegisterScreen
@@ -12,36 +12,36 @@ import com.kashmir.bislei.screens.authScreens.ResetPasswordScreen
 
 @Composable
 fun NavigationGraph(navController: NavHostController, isUserLoggedIn: Boolean) {
-    NavHost(navController = navController, startDestination = Screens.Splash.route) {
+    NavHost(navController = navController, startDestination = AuthScreens.Splash.route) {
 
-        composable(Screens.Splash.route) {
+        composable(AuthScreens.Splash.route) {
             SplashScreen(
                 navController = navController,
                 isUserLoggedIn = isUserLoggedIn
             )
         }
 
-        composable(Screens.Login.route) {
+        composable(AuthScreens.Login.route) {
             LoginScreen(
                 onLoginSuccess = {
-                    navController.navigate(Screens.Home.route) {
-                        popUpTo(Screens.Login.route) { inclusive = true }
+                    navController.navigate(AuthScreens.Home.route) {
+                        popUpTo(AuthScreens.Login.route) { inclusive = true }
                     }
                 },
                 onRegisterClick = {
-                    navController.navigate(Screens.Register.route)
+                    navController.navigate(AuthScreens.Register.route)
                 },
                 onForgotPassword = {
-                    navController.navigate(Screens.ResetPassword.route)
+                    navController.navigate(AuthScreens.ResetPassword.route)
                 }
             )
         }
 
-        composable(Screens.Register.route) {
+        composable(AuthScreens.Register.route) {
             RegisterScreen(
                 onRegisterSuccess = {
-                    navController.navigate(Screens.Login.route) {
-                        popUpTo(Screens.Register.route) { inclusive = true }
+                    navController.navigate(AuthScreens.Login.route) {
+                        popUpTo(AuthScreens.Register.route) { inclusive = true }
                     }
                 },
                 onLoginClick = {
@@ -50,7 +50,7 @@ fun NavigationGraph(navController: NavHostController, isUserLoggedIn: Boolean) {
             )
         }
 
-        composable(Screens.Home.route) {
+        composable(AuthScreens.Home.route) {
 //            HomeScreen(
 //                onLogout = {
 //                    navController.navigate(Screens.Login.route) {
@@ -60,14 +60,14 @@ fun NavigationGraph(navController: NavHostController, isUserLoggedIn: Boolean) {
 //            )
             MainScreen(
                 onLogout = {
-                    navController.navigate(Screens.Login.route) {
-                        popUpTo(Screens.Home.route) { inclusive = true }
+                    navController.navigate(AuthScreens.Login.route) {
+                        popUpTo(AuthScreens.Home.route) { inclusive = true }
                     }
                 }
             )
         }
 
-        composable(Screens.ResetPassword.route) {
+        composable(AuthScreens.ResetPassword.route) {
             ResetPasswordScreen(
                 onBackToLogin = {
                     navController.popBackStack()

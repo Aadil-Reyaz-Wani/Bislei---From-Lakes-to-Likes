@@ -1,0 +1,66 @@
+package com.kashmir.bislei.screens.detailScreens
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.kashmir.bislei.model.Post
+import com.kashmir.bislei.screens.profileScreens.PostCard
+import com.kashmir.bislei.viewModels.ProfileViewModel
+import kotlinx.coroutines.delay
+
+@Composable
+fun PostFeedScreen(navController: NavHostController) {
+    val posts = navController.previousBackStackEntry
+        ?.savedStateHandle
+        ?.get<List<Post>>("posts") ?: emptyList()
+
+    val startIndex = navController.previousBackStackEntry
+        ?.savedStateHandle
+        ?.get<Int>("startIndex") ?: 0
+
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+
+    val viewModel: ProfileViewModel = viewModel()
+
+    // Scroll to the tapped post after composition
+    LaunchedEffect(posts) {
+        // Slight delay to ensure layout has calculated height
+        delay(300)
+        if (startIndex in posts.indices) {
+            listState.scrollToItem(startIndex)
+        }
+    }
+
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White)) {
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            state = listState,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(vertical = 100.dp)
+        ) {
+            itemsIndexed(posts) { _, post ->
+                PostCard(
+                    post = post,
+                    viewModel = viewModel,
+                    onPostDeleted = {
+                        // Optional: Show snackbar or popBackStack if needed
+                    }
+                )
+            }
+        }
+    }
+}

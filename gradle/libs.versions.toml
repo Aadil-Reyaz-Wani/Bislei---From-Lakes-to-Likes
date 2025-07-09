@@ -30,6 +30,8 @@ mediationTestSuite = "3.0.0"
 runtime = "1.8.1"
 runtimeLivedata = "1.8.1"
 storage = "1.5.0"
+pullrefresh = "1.2.0-alpha03"
+
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -68,6 +70,8 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 mediation-test-suite = { group = "com.google.android.ads", name = "mediation-test-suite", version.ref = "mediationTestSuite" }
 play-services-maps-v1700 = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMapsVersion" }
 androidx-storage = { group = "androidx.test.services", name = "storage", version.ref = "storage" }
+androidx-material-pullrefresh = { group = "androidx.compose.material", name = "material-pull-refresh", version.ref = "pullrefresh" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

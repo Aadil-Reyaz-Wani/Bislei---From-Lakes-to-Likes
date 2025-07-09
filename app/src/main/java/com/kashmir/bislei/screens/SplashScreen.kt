@@ -7,7 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.kashmir.bislei.navigation.screenroutes.Screens
+import com.kashmir.bislei.navigation.screenroutes.AuthScreens
 import kotlinx.coroutines.delay
 
 @Composable
@@ -19,12 +19,12 @@ fun SplashScreen(
         delay(2500)
 
         if (isUserLoggedIn) {
-            navController.navigate(Screens.Home.route) {
-                popUpTo(Screens.Splash.route) { inclusive = true }
+            navController.navigate(AuthScreens.Home.route) {
+                popUpTo(AuthScreens.Splash.route) { inclusive = true }
             }
         } else {
-            navController.navigate(Screens.Login.route) {
-                popUpTo(Screens.Splash.route) { inclusive = true }
+            navController.navigate(AuthScreens.Login.route) {
+                popUpTo(AuthScreens.Splash.route) { inclusive = true }
             }
         }
     }

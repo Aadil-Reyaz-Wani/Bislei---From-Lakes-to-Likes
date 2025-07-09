@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.kashmir.bislei.navigation.BottomNavGraph
 import com.kashmir.bislei.navigation.BottomNavigationBar
+import com.kashmir.bislei.viewModels.ProfileViewModel
 
 @Composable
 fun MainScreen(onLogout: () -> Unit) {
@@ -17,6 +18,7 @@ fun MainScreen(onLogout: () -> Unit) {
         BottomNavGraph(
             navController = navController,
             modifier = Modifier.padding(innerPadding),
+            viewModel = ProfileViewModel(),
             onLogout = onLogout
 
         )

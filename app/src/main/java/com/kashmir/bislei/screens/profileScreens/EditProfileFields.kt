@@ -1,6 +1,5 @@
 package com.kashmir.bislei.screens.profileScreens
 
-import android.app.Activity
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -27,9 +26,11 @@ import android.graphics.ImageDecoder
 import android.os.Build
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.unit.sp
 
 
 @Composable
@@ -73,10 +74,10 @@ fun EditProfileFieldsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp),
+            .padding(start = 20.dp, end = 20.dp, top = 60.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(modifier = Modifier.size(120.dp)) {
+        Box(modifier = Modifier.size(120.dp), contentAlignment = Alignment.Center) {
             if (selectedImageUri != null) {
                 val bitmap = remember(selectedImageUri) {
                     val source = if (Build.VERSION.SDK_INT < 28) {
@@ -92,9 +93,9 @@ fun EditProfileFieldsScreen(
                     bitmap = bitmap.asImageBitmap(),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(120.dp)
+                        .size(100.dp)
                         .clip(CircleShape)
-                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                        .border(2.dp, color = Color.Black, CircleShape)
                         .clickable { launcher.launch("image/*") },
                     contentScale = ContentScale.Crop
                 )
@@ -103,9 +104,9 @@ fun EditProfileFieldsScreen(
                     painter = rememberAsyncImagePainter(profile.profileImageUrl),
                     contentDescription = "Profile Image",
                     modifier = Modifier
-                        .size(120.dp)
+                        .size(100.dp)
                         .clip(CircleShape)
-                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                        .border(2.dp, color = Color.Black, CircleShape)
                         .clickable { launcher.launch("image/*") },
                     contentScale = ContentScale.Crop
                 )
@@ -163,38 +164,57 @@ fun EditProfileFieldsScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Button(
-            onClick = {
-                coroutineScope.launch {
-                    isLoading = true
-                    val success = viewModel.updateUserProfile(
-                        name = name,
-                        bio = bio,
-                        imageUri = selectedImageUri,
-                        email = email,
-                        phone = phone
-                    )
-                    isLoading = false
-
-                    if (success) {
-                        println("Profile successfully updated")
-                        onProfileSaved()
-                    } else {
-                        println("Failed to update profile")
-                    }
-                }
-            },
-            enabled = isFormValid && !isLoading
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            if (isLoading) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    strokeWidth = 2.dp,
-                    modifier = Modifier.size(20.dp)
-                )
-            } else {
-                Text("Save Profile")
+            OutlinedButton(
+                onClick = { onProfileSaved() },
+                modifier = Modifier.weight(1f),
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Text("Discard", color = Color.Black, fontSize = 18.sp)
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button (
+                onClick = {
+                    coroutineScope.launch {
+                        isLoading = true
+                        val success = viewModel.updateUserProfile(
+                            name = name,
+                            bio = bio,
+                            imageUri = selectedImageUri,
+                            email = email,
+                            phone = phone
+                        )
+                        isLoading = false
+
+                        if (success) {
+                            println("Profile successfully updated")
+                            onProfileSaved()
+                        } else {
+                            println("Failed to update profile")
+                        }
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(Color.Black),
+                shape = MaterialTheme.shapes.medium,
+                enabled = isFormValid && !isLoading,
+                modifier = Modifier.weight(1f)
+            ) {
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        strokeWidth = 2.dp,
+                        modifier = Modifier.size(20.dp)
+                    )
+                } else {
+                    Text("Save", fontSize = 18.sp)
+                }
             }
         }
+
     }
 }

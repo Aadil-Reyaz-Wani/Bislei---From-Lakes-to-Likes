@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.google.gms.google.services)
     id("dagger.hilt.android.plugin") // Added Hilt plugin
     id("org.jetbrains.kotlin.kapt") // Required for Hilt compiler
+    id("kotlin-parcelize")
 }
 
 // Load the API key from apikey.properties
@@ -116,5 +117,11 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.play.services.maps.v1700)
     implementation(libs.play.services.location.v1700)
+
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.30.1")
+
+
+
+
 
 }

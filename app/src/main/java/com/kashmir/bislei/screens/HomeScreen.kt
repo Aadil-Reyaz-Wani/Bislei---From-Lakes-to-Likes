@@ -11,27 +11,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier,
-    onLogout: () -> Unit // Callback to navigate to login screen
+    modifier: Modifier = Modifier
 ) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(text = "This is the Home Screen", color = Color.Black)
-            Spacer(modifier = Modifier.height(24.dp))
-            Button(
-                onClick = {
-                    FirebaseAuth.getInstance().signOut()
-                    onLogout() // Navigate back to login
-                }
-            ) {
-                Text("Logout")
-            }
-        }
-    }
 }

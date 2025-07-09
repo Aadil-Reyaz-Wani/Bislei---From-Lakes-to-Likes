@@ -5,29 +5,56 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.kashmir.bislei.model.Post
 import com.kashmir.bislei.navigation.screenroutes.BottomNavItem
 import com.kashmir.bislei.screens.*
+import com.kashmir.bislei.screens.detailScreens.PostDetailScreen
+import com.kashmir.bislei.screens.detailScreens.PostFeedScreen
 import com.kashmir.bislei.screens.profileScreens.EditProfileFieldsScreen
 import com.kashmir.bislei.screens.profileScreens.ProfileScreen
+import com.kashmir.bislei.screens.uploadScreens.UploadPostScreen
+import com.kashmir.bislei.viewModels.ProfileViewModel
 
 @Composable
 fun BottomNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    viewModel: ProfileViewModel,
     onLogout: () -> Unit
 ) {
     NavHost(navController, startDestination = BottomNavItem.Home.route) {
-        composable(BottomNavItem.Home.route) { HomeScreen(onLogout = onLogout) }
+        composable(BottomNavItem.Home.route) { /* Home Screen */ }
         composable(BottomNavItem.Explore.route) { ExploreScreen() }
+        composable(BottomNavItem.Upload.route) {
+            UploadPostScreen(
+                onUploadSuccess = {
+                    navController.navigate(BottomNavItem.Home.route) {
+                        popUpTo(BottomNavItem.Upload.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
         composable(BottomNavItem.Identify.route) { /* Identify Fish Screen */ }
-        composable(BottomNavItem.Ranking.route) { /* Ranking Screen */ }
 
         // Profile screen with navigation to Edit
         composable(BottomNavItem.Profile.route) {
             ProfileScreen(
                 onEditProfile = { navController.navigate("edit_profile") },
-                onPostClick = { post -> }
+                onPostClick = { post ->
+                    val posts = (viewModel.userPosts.value) // get all posts from the ViewModel
+
+                    navController.currentBackStackEntry?.savedStateHandle?.set("posts", posts)
+                    navController.currentBackStackEntry?.savedStateHandle?.set("startIndex", posts.indexOf(post))
+                    navController.navigate("post_feed")
+                }
+                ,
+                onLogout = onLogout
             )
+        }
+
+        composable("post_feed") {
+            PostFeedScreen(navController = navController)
         }
 
         // Edit profile screen
@@ -37,6 +64,20 @@ fun BottomNavGraph(
                     navController.popBackStack()
                 }
             )
+        }
+
+        // New Post Detail screen
+        composable("post_detail") {
+            val post = navController.previousBackStackEntry
+                ?.savedStateHandle?.get<Post>("selectedPost")
+
+            if (post != null) {
+                PostDetailScreen(
+//                    post = post,
+//                    onBack = { navController.popBackStack() }
+                    navController = navController
+                )
+            }
         }
     }
 }
