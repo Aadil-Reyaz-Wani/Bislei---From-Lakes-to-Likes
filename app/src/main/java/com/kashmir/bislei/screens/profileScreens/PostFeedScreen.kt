@@ -32,9 +32,8 @@ fun PostFeedScreen(navController: NavHostController) {
 
     val viewModel: ProfileViewModel = viewModel()
 
-    // Scroll to the tapped post after composition
+
     LaunchedEffect(posts) {
-        // Slight delay to ensure layout has calculated height
         delay(300)
         if (startIndex in posts.indices) {
             listState.scrollToItem(startIndex)
@@ -57,7 +56,7 @@ fun PostFeedScreen(navController: NavHostController) {
                     post = post,
                     viewModel = viewModel,
                     onPostDeleted = {
-                        // Optional: Show snackbar or popBackStack if needed
+
                     }
                 )
             }

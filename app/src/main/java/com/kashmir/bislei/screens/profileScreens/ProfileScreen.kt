@@ -82,7 +82,7 @@ fun ProfileScreen(
         ) {
             item(span = { GridItemSpan(3) }) {
                 Column {
-                    // ───────────────────────────── Profile Header ─────────────────────────────
+                    // Profile Header
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
@@ -210,7 +210,7 @@ fun ProfileScreen(
                 }
             }
 
-            // ───────────────────────────── Grid Posts ─────────────────────────────
+            // Grid Post
             items(posts) { post ->
                 AsyncImage(
                     model = post.imageUrl ?: "",

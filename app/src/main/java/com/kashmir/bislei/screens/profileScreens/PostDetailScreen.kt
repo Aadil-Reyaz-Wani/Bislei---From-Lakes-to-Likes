@@ -55,7 +55,7 @@ fun PostDetailScreen(navController: NavHostController) {
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    // 🧭 Top bar with location and menu
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -64,7 +64,7 @@ fun PostDetailScreen(navController: NavHostController) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Dal Lake, Srinagar", // Optional: Make dynamic
+                            text = "Dal Lake, Srinagar",
                             style = MaterialTheme.typography.bodyMedium
                         )
 
@@ -104,7 +104,7 @@ fun PostDetailScreen(navController: NavHostController) {
                         }
                     }
 
-                    // 🖼️ Image area
+
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -122,7 +122,7 @@ fun PostDetailScreen(navController: NavHostController) {
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    // ❤️ Likes & 💬 Comments
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.padding(horizontal = 4.dp)
