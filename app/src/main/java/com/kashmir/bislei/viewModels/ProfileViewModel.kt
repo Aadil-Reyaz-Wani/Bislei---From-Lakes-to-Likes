@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.UUID
+import java.util.*
 
 class ProfileViewModel : ViewModel() {
 
@@ -73,7 +73,6 @@ class ProfileViewModel : ViewModel() {
             }
     }
 
-
     suspend fun updateUserProfile(
         name: String,
         bio: String,
@@ -125,17 +124,19 @@ class ProfileViewModel : ViewModel() {
             storageRef.putFile(imageUri).await()
             val url = storageRef.downloadUrl.await().toString()
 
-            val post = Post(
-                id = postId,
-                userId = uid,
-                imageUrl = url,
-                caption = caption.ifBlank { "" },
-                timestamp = System.currentTimeMillis()
+            val postMap = mapOf(
+                "id" to postId,
+                "userId" to uid,
+                "imageUrl" to url,
+                "caption" to caption.ifBlank { "" },
+                "timestamp" to System.currentTimeMillis(),
+                "likesCount" to 0,
+                "commentsCount" to 0
             )
 
-            db.collection("posts").document(postId).set(post).await()
+            db.collection("posts").document(postId).set(postMap).await()
             db.collection("users").document(uid)
-                .collection("posts").document(postId).set(post).await()
+                .collection("posts").document(postId).set(postMap).await()
 
             return true
         } catch (e: Exception) {

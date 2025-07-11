@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import com.kashmir.bislei.model.Post
 import com.kashmir.bislei.navigation.screenroutes.BottomNavItem
 import com.kashmir.bislei.screens.*
-import com.kashmir.bislei.screens.detailScreens.PostDetailScreen
 import com.kashmir.bislei.screens.detailScreens.PostFeedScreen
 import com.kashmir.bislei.screens.profileScreens.EditProfileFieldsScreen
 import com.kashmir.bislei.screens.profileScreens.ProfileScreen
@@ -64,20 +63,6 @@ fun BottomNavGraph(
                     navController.popBackStack()
                 }
             )
-        }
-
-        // New Post Detail screen
-        composable("post_detail") {
-            val post = navController.previousBackStackEntry
-                ?.savedStateHandle?.get<Post>("selectedPost")
-
-            if (post != null) {
-                PostDetailScreen(
-//                    post = post,
-//                    onBack = { navController.popBackStack() }
-                    navController = navController
-                )
-            }
         }
     }
 }
