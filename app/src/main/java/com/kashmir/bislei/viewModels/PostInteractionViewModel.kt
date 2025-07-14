@@ -1,3 +1,4 @@
+// no change in package line
 package com.kashmir.bislei.viewModels
 
 import android.util.Log
@@ -7,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.kashmir.bislei.model.Comment
+import com.kashmir.bislei.model.UserProfile
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
@@ -25,6 +27,9 @@ class PostInteractionViewModel : ViewModel() {
 
     private val _commentsMap = MutableStateFlow<Map<String, List<Comment>>>(emptyMap())
     val commentsMap: StateFlow<Map<String, List<Comment>>> = _commentsMap
+
+    private val _userProfilesMap = MutableStateFlow<Map<String, UserProfile>>(emptyMap())
+    val userProfilesMap: StateFlow<Map<String, UserProfile>> = _userProfilesMap
 
     init {
         fetchLikedPosts()
@@ -94,18 +99,32 @@ class PostInteractionViewModel : ViewModel() {
                 _commentsMap.value = _commentsMap.value.toMutableMap().apply {
                     put(postId, comments)
                 }
+
+                // Fetch profile for each commenter
+                comments.map { it.userId }.distinct().forEach { uid ->
+                    fetchUserProfileIfMissing(uid)
+                }
+            }
+    }
+
+    private fun fetchUserProfileIfMissing(userId: String) {
+        if (_userProfilesMap.value.containsKey(userId)) return
+
+        db.collection("users").document(userId).get()
+            .addOnSuccessListener { doc ->
+                doc?.toObject(UserProfile::class.java)?.let { profile ->
+                    _userProfilesMap.value = _userProfilesMap.value.toMutableMap().apply {
+                        put(userId, profile)
+                    }
+                }
             }
     }
 
     fun addComment(postId: String, content: String) {
         val uid = auth.currentUser?.uid ?: return
-        if (content.isBlank()) {
-            Log.w("AddComment", "Empty comment not allowed.")
-            return
-        }
+        if (content.isBlank()) return
 
         val commentId = UUID.randomUUID().toString()
-
         val comment = Comment(
             id = commentId,
             userId = uid,
@@ -118,18 +137,14 @@ class PostInteractionViewModel : ViewModel() {
                 val postRef = db.collection("posts").document(postId)
                 val commentRef = postRef.collection("comments").document(commentId)
 
-                // Step 1: Write the comment
                 commentRef.set(comment).await()
-                Log.d("AddComment", "Comment added to /posts/$postId/comments/$commentId")
 
-                // Step 2: Increment the comment count safely
                 db.runTransaction { transaction ->
                     val snapshot = transaction.get(postRef)
                     val currentCount = snapshot.getLong("commentsCount") ?: 0
                     transaction.update(postRef, "commentsCount", currentCount + 1)
                 }.await()
 
-                // Step 3: Update UI
                 fetchCommentCount(postId)
                 fetchCommentsForPost(postId)
 
@@ -139,7 +154,6 @@ class PostInteractionViewModel : ViewModel() {
         }
     }
 
-
     fun fetchLikeStatus(postId: String) {
         fetchLikeCount(postId)
         fetchCommentCount(postId)
@@ -148,7 +162,6 @@ class PostInteractionViewModel : ViewModel() {
 
     fun fetchLikeCount(postId: String) {
         val postRef = db.collection("posts").document(postId)
-
         postRef.addSnapshotListener { snapshot, _ ->
             val count = snapshot?.getLong("likesCount")?.toInt() ?: 0
             _likeCounts.value = _likeCounts.value.toMutableMap().apply {
@@ -159,7 +172,6 @@ class PostInteractionViewModel : ViewModel() {
 
     fun fetchCommentCount(postId: String) {
         val postRef = db.collection("posts").document(postId)
-
         postRef.addSnapshotListener { snapshot, _ ->
             val count = snapshot?.getLong("commentsCount")?.toInt() ?: 0
             _commentCounts.value = _commentCounts.value.toMutableMap().apply {

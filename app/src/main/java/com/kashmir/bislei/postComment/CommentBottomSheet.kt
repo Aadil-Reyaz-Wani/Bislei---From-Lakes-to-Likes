@@ -1,6 +1,5 @@
 package com.kashmir.bislei.postComment
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,12 +7,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -23,7 +22,6 @@ import com.kashmir.bislei.model.Comment
 import com.kashmir.bislei.model.UserProfile
 import com.kashmir.bislei.viewModels.PostInteractionViewModel
 import com.kashmir.bislei.viewModels.ProfileViewModel
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,15 +32,12 @@ fun CommentBottomSheet(
     postInteractionViewModel: PostInteractionViewModel,
     profileViewModel: ProfileViewModel
 ) {
-    val scope = rememberCoroutineScope()
     val commentText = remember { mutableStateOf(TextFieldValue()) }
     val userProfile by profileViewModel.userProfile.collectAsState()
     val commentsMap by postInteractionViewModel.commentsMap.collectAsState()
-    val comments = commentsMap[postId] ?: emptyList()
+    val userProfilesMap by postInteractionViewModel.userProfilesMap.collectAsState()
 
-    LaunchedEffect(postId) {
-        postInteractionViewModel.fetchCommentsForPost(postId)
-    }
+    val comments = commentsMap[postId] ?: emptyList()
 
     Surface(
         modifier = Modifier.fillMaxHeight(0.85f),
@@ -54,25 +49,21 @@ fun CommentBottomSheet(
                 .fillMaxSize()
                 .padding(12.dp)
         ) {
-            // Comment List
             LazyColumn(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(bottom = 12.dp),
-                reverseLayout = false
+                    .padding(bottom = 12.dp)
             ) {
                 items(comments) { comment ->
-                    CommentItem(comment = comment, profile = userProfile)
+                    val commenter = userProfilesMap[comment.userId] ?: UserProfile()
+                    CommentItem(comment = comment, profile = commenter)
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }
 
-            // Sticky Input Row
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 6.dp)
+                modifier = Modifier.fillMaxWidth()
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
@@ -80,6 +71,7 @@ fun CommentBottomSheet(
                         .crossfade(true)
                         .build(),
                     contentDescription = "User Profile",
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(36.dp)
                         .clip(CircleShape)
@@ -119,6 +111,7 @@ fun CommentBottomSheet(
     }
 }
 
+
 @Composable
 fun CommentItem(comment: Comment, profile: UserProfile) {
     val timestampText = remember(comment.timestamp) {
@@ -136,6 +129,7 @@ fun CommentItem(comment: Comment, profile: UserProfile) {
                 .crossfade(true)
                 .build(),
             contentDescription = "Comment Profile",
+            contentScale = ContentScale.Crop ,
             modifier = Modifier
                 .size(36.dp)
                 .clip(CircleShape)

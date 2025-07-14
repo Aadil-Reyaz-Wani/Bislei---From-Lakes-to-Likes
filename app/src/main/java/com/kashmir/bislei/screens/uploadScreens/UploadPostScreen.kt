@@ -46,7 +46,8 @@ fun UploadPostScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(20.dp),
+            .padding(20.dp)
+            .statusBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text("New Post", style = MaterialTheme.typography.titleLarge)

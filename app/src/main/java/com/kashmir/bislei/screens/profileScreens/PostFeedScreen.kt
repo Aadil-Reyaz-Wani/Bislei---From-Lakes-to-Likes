@@ -43,14 +43,15 @@ fun PostFeedScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = listState,
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            contentPadding = PaddingValues(vertical = 100.dp)
+//            contentPadding = PaddingValues(vertical = 100.dp)
         ) {
             itemsIndexed(posts) { _, post ->
                 // Start fetching real-time data for each post

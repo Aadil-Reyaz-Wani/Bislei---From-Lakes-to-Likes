@@ -1,17 +1,24 @@
 package com.kashmir.bislei.navigation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.kashmir.bislei.R
 import com.kashmir.bislei.model.Post
 import com.kashmir.bislei.navigation.screenroutes.BottomNavItem
 import com.kashmir.bislei.screens.*
 import com.kashmir.bislei.screens.detailScreens.PostFeedScreen
+import com.kashmir.bislei.screens.feedScreens.HomeScreen
 import com.kashmir.bislei.screens.profileScreens.EditProfileFieldsScreen
 import com.kashmir.bislei.screens.profileScreens.ProfileScreen
 import com.kashmir.bislei.screens.uploadScreens.UploadPostScreen
+import com.kashmir.bislei.viewModels.FeedViewModel
+import com.kashmir.bislei.viewModels.PostInteractionViewModel
 import com.kashmir.bislei.viewModels.ProfileViewModel
 
 @Composable
@@ -22,7 +29,14 @@ fun BottomNavGraph(
     onLogout: () -> Unit
 ) {
     NavHost(navController, startDestination = BottomNavItem.Home.route) {
-        composable(BottomNavItem.Home.route) { /* Home Screen */ }
+        composable(BottomNavItem.Home.route) {
+            HomeScreen(
+                feedViewModel = FeedViewModel(),
+                profileViewModel = ProfileViewModel(),
+                postInteractionViewModel = PostInteractionViewModel(),
+                modifier = Modifier
+            )
+        }
         composable(BottomNavItem.Explore.route) { ExploreScreen() }
         composable(BottomNavItem.Upload.route) {
             UploadPostScreen(
@@ -44,10 +58,12 @@ fun BottomNavGraph(
                     val posts = (viewModel.userPosts.value) // get all posts from the ViewModel
 
                     navController.currentBackStackEntry?.savedStateHandle?.set("posts", posts)
-                    navController.currentBackStackEntry?.savedStateHandle?.set("startIndex", posts.indexOf(post))
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        "startIndex",
+                        posts.indexOf(post)
+                    )
                     navController.navigate("post_feed")
-                }
-                ,
+                },
                 onLogout = onLogout
             )
         }

@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -17,7 +18,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.kashmir.bislei.model.Post
 import com.kashmir.bislei.postComment.CommentBottomSheet
@@ -44,6 +52,7 @@ fun PostCard(
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
 
+
     LaunchedEffect(post.id) {
         postInteractionViewModel.fetchLikeStatus(post.id)
         postInteractionViewModel.fetchCommentsForPost(post.id)
@@ -65,8 +74,6 @@ fun PostCard(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(0.dp),
-        shape = RoundedCornerShape(0.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -179,12 +186,78 @@ fun PostCard(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text("$commentCount")
             }
+
+            // Here
+
+            if (!post.caption.isNullOrBlank()) {
+                Spacer(modifier = Modifier.height(8.dp))
+                ExpandableCaption(caption = post.caption!!)
+            }
+
+        }
+    }
+}
+
+@Composable
+fun ExpandableCaption(
+    caption: String,
+    modifier: Modifier = Modifier
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+    val maxChars = 100 // Approximate for 2 lines
+
+    val shouldTruncate = caption.length > maxChars
+
+    val displayText = remember(caption, isExpanded) {
+        if (!shouldTruncate) {
+            AnnotatedString(caption)
+        } else if (isExpanded) {
+            buildAnnotatedString {
+                append(caption)
+                append("  ")
+                pushStringAnnotation(tag = "see_less", annotation = "see_less")
+                withStyle(
+                    style = SpanStyle(
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Medium
+                    )
+                ) {
+                    append("See less")
+                }
+                pop()
+            }
+        } else {
+            buildAnnotatedString {
+                val truncated = caption.take(maxChars).trimEnd()
+                append(truncated)
+                append("… ")
+                pushStringAnnotation(tag = "see_more", annotation = "see_more")
+                withStyle(
+                    style = SpanStyle(
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Medium
+                    )
+                ) {
+                    append("See more")
+                }
+                pop()
+            }
         }
     }
 
-    Divider(
-        thickness = 0.6.dp,
-        color = Color.DarkGray,
-        modifier = Modifier.padding(horizontal = 10.dp)
+    ClickableText(
+        text = displayText,
+        style = MaterialTheme.typography.bodySmall,
+        modifier = modifier,
+        onClick = { offset ->
+            displayText.getStringAnnotations(tag = "see_more", start = offset, end = offset)
+                .firstOrNull()?.let {
+                    isExpanded = true
+                }
+            displayText.getStringAnnotations(tag = "see_less", start = offset, end = offset)
+                .firstOrNull()?.let {
+                    isExpanded = false
+                }
+        }
     )
 }
