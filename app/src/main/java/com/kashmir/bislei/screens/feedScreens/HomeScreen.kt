@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.kashmir.bislei.screens.profileScreens.PostCard
+import com.kashmir.bislei.smallComposables.BisleiTopAppBar
 import com.kashmir.bislei.viewModels.FeedViewModel
 import com.kashmir.bislei.viewModels.PostInteractionViewModel
 import com.kashmir.bislei.viewModels.ProfileViewModel
@@ -18,6 +19,7 @@ import com.kashmir.bislei.viewModels.ProfileViewModel
 
 @Composable
 fun HomeScreen(
+    onNavigateBack: () -> Unit = {},
     feedViewModel: FeedViewModel,
     profileViewModel: ProfileViewModel,
     postInteractionViewModel: PostInteractionViewModel,
@@ -29,8 +31,12 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            BisleiTopAppBar()
-        }
+            BisleiTopAppBar(
+                title = "Bislei",
+                onNavigateBack = onNavigateBack
+            )
+        },
+        containerColor = MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = Modifier
@@ -59,20 +65,4 @@ fun HomeScreen(
             }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun BisleiTopAppBar(modifier: Modifier = Modifier) {
-    TopAppBar(
-        title = {
-            Row {
-                Text(
-                    text = "Bislei",
-//                    style = MaterialTheme.typography.displayMedium
-                )
-            }
-        },
-        modifier = modifier
-    )
 }

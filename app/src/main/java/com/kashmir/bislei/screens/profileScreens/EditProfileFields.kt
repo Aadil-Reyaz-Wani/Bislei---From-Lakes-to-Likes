@@ -95,7 +95,7 @@ fun EditProfileFieldsScreen(
                     modifier = Modifier
                         .size(100.dp)
                         .clip(CircleShape)
-                        .border(2.dp, color = Color.Black, CircleShape)
+                        .border(2.dp, color = MaterialTheme.colorScheme.primary, CircleShape)
                         .clickable { launcher.launch("image/*") },
                     contentScale = ContentScale.Crop
                 )
@@ -106,7 +106,7 @@ fun EditProfileFieldsScreen(
                     modifier = Modifier
                         .size(100.dp)
                         .clip(CircleShape)
-                        .border(2.dp, color = Color.Black, CircleShape)
+                        .border(2.dp, color = MaterialTheme.colorScheme.primary, CircleShape)
                         .clickable { launcher.launch("image/*") },
                     contentScale = ContentScale.Crop
                 )
@@ -199,7 +199,6 @@ fun EditProfileFieldsScreen(
                         }
                     }
                 },
-                colors = ButtonDefaults.buttonColors(Color.Black),
                 shape = MaterialTheme.shapes.medium,
                 enabled = isFormValid && !isLoading,
                 modifier = Modifier.weight(1f)
