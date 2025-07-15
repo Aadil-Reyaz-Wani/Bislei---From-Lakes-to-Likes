@@ -107,7 +107,7 @@ class PostInteractionViewModel : ViewModel() {
             }
     }
 
-    private fun fetchUserProfileIfMissing(userId: String) {
+    fun fetchUserProfileIfMissing(userId: String) {
         if (_userProfilesMap.value.containsKey(userId)) return
 
         db.collection("users").document(userId).get()

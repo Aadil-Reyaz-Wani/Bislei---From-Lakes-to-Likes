@@ -1,6 +1,5 @@
 package com.kashmir.bislei.screens.feedScreens
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,7 +18,6 @@ import com.kashmir.bislei.viewModels.ProfileViewModel
 
 @Composable
 fun HomeScreen(
-    onNavigateBack: () -> Unit = {},
     feedViewModel: FeedViewModel,
     profileViewModel: ProfileViewModel,
     postInteractionViewModel: PostInteractionViewModel,
@@ -33,7 +31,7 @@ fun HomeScreen(
         topBar = {
             BisleiTopAppBar(
                 title = "Bislei",
-                onNavigateBack = onNavigateBack
+//                onNavigateBack = onNavigateBack
             )
         },
         containerColor = MaterialTheme.colorScheme.background
@@ -58,7 +56,8 @@ fun HomeScreen(
                             post = post,
                             profileViewModel = profileViewModel,
                             postInteractionViewModel = postInteractionViewModel,
-                            onPostDeleted = {} // No delete action in feed
+                            onPostDeleted = {}, // No delete action in feed
+                            showDeleteOption = false
                         )
                     }
                 }

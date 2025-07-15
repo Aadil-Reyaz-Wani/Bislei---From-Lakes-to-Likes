@@ -1,18 +1,13 @@
 package com.kashmir.bislei.navigation
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.kashmir.bislei.R
-import com.kashmir.bislei.model.Post
 import com.kashmir.bislei.navigation.screenroutes.BottomNavItem
-import com.kashmir.bislei.screens.*
 import com.kashmir.bislei.screens.detailScreens.PostFeedScreen
+import com.kashmir.bislei.screens.exploreScreens.ExploreScreen
 import com.kashmir.bislei.screens.feedScreens.HomeScreen
 import com.kashmir.bislei.screens.profileScreens.EditProfileFieldsScreen
 import com.kashmir.bislei.screens.profileScreens.ProfileScreen

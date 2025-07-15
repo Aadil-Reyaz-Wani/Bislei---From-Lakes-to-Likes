@@ -245,29 +245,6 @@ private val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainerHigh = surfaceContainerHighDarkHighContrast,
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
 )
-//@Composable
-//fun BisleiTheme(
-//    darkTheme: Boolean = isSystemInDarkTheme(),
-//    // Dynamic color is available on Android 12+
-//    dynamicColor: Boolean = true,
-//    content: @Composable () -> Unit
-//) {
-//    val colorScheme = when {
-//        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-//            val context = LocalContext.current
-//            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-//        }
-//
-//        darkTheme -> DarkColorScheme
-//        else -> LightColorScheme
-//    }
-//
-//    MaterialTheme(
-//        colorScheme = colorScheme,
-//        typography = Typography,
-//        content = content
-//    )
-//}
 
 @Immutable
 data class ColorFamily(
@@ -302,8 +279,8 @@ fun BisleiTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = Color.Transparent.toArgb()
-            window.navigationBarColor = Color.Transparent.toArgb()
+            window.statusBarColor = colorScheme.background.toArgb()
+            window.navigationBarColor = colorScheme.background.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
             WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = !darkTheme
         }
