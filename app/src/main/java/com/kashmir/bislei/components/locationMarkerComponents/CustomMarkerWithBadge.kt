@@ -1,4 +1,4 @@
-package com.kashmir.bislei.additionals
+package com.kashmir.bislei.components.locationMarkerComponents
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
@@ -28,7 +28,7 @@ fun CustomMarkerWithBadge(
         snippet = spot.locationName,
         onClick = {
             onClick()
-            true // Consume the event
+            true
         }
     )
 }

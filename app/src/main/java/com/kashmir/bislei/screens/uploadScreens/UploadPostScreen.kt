@@ -16,12 +16,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
-import com.kashmir.bislei.model.Post
 import com.kashmir.bislei.viewModels.ProfileViewModel
 import kotlinx.coroutines.launch
-import java.util.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UploadPostScreen(
     viewModel: ProfileViewModel = viewModel(),

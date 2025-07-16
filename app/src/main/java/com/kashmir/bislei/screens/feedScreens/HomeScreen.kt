@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.kashmir.bislei.screens.profileScreens.PostCard
-import com.kashmir.bislei.smallComposables.BisleiTopAppBar
+import com.kashmir.bislei.components.BisleiTopAppBar
 import com.kashmir.bislei.viewModels.FeedViewModel
 import com.kashmir.bislei.viewModels.PostInteractionViewModel
 import com.kashmir.bislei.viewModels.ProfileViewModel

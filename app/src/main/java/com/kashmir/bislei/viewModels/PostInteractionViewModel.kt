@@ -1,4 +1,3 @@
-// no change in package line
 package com.kashmir.bislei.viewModels
 
 import android.util.Log
@@ -20,7 +19,7 @@ class PostInteractionViewModel : ViewModel() {
     private val db = FirebaseFirestore.getInstance()
 
     private val _likedPosts = MutableStateFlow<Set<String>>(emptySet())
-    val likedPosts: StateFlow<Set<String>> = _likedPosts
+    private val likedPosts: StateFlow<Set<String>> = _likedPosts
 
     private val _likeCounts = MutableStateFlow<Map<String, Int>>(emptyMap())
     private val _commentCounts = MutableStateFlow<Map<String, Int>>(emptyMap())
@@ -160,7 +159,7 @@ class PostInteractionViewModel : ViewModel() {
         fetchCommentsForPost(postId)
     }
 
-    fun fetchLikeCount(postId: String) {
+    private fun fetchLikeCount(postId: String) {
         val postRef = db.collection("posts").document(postId)
         postRef.addSnapshotListener { snapshot, _ ->
             val count = snapshot?.getLong("likesCount")?.toInt() ?: 0
@@ -170,7 +169,7 @@ class PostInteractionViewModel : ViewModel() {
         }
     }
 
-    fun fetchCommentCount(postId: String) {
+    private fun fetchCommentCount(postId: String) {
         val postRef = db.collection("posts").document(postId)
         postRef.addSnapshotListener { snapshot, _ ->
             val count = snapshot?.getLong("commentsCount")?.toInt() ?: 0

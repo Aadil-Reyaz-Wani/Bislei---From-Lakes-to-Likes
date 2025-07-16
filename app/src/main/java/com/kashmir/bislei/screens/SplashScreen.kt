@@ -7,16 +7,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.FirebaseAuth
 import com.kashmir.bislei.navigation.screenroutes.AuthScreens
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    navController: NavHostController,
-    isUserLoggedIn: Boolean
+    navController: NavHostController
 ) {
-    LaunchedEffect(true) {
+    LaunchedEffect(Unit) {
         delay(2500)
+
+        val isUserLoggedIn = FirebaseAuth.getInstance().currentUser != null
 
         if (isUserLoggedIn) {
             navController.navigate(AuthScreens.Home.route) {

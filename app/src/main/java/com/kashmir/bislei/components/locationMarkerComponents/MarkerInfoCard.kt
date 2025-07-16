@@ -1,9 +1,8 @@
-package com.kashmir.bislei.components
+package com.kashmir.bislei.components.locationMarkerComponents
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.LocationOn
@@ -128,7 +127,7 @@ fun MarkerInfoCard(
 
                 Spacer(modifier = Modifier.height(Dimensions.spaceS))
 
-                // Tap to view more hint
+                // Tap to view more details
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
@@ -152,8 +151,8 @@ fun MarkerInfoCard(
 
         // Pointer triangle
         Canvas(modifier = Modifier.size(24.dp)) {
-            val triangleColor = androidx.compose.ui.graphics.Color(0xFFFFFFFF) // Surface color
-            val strokeColor = androidx.compose.ui.graphics.Color(0xFFE0E0E0) // Light gray for border
+            val triangleColor = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
+            val strokeColor = androidx.compose.ui.graphics.Color(0xFFE0E0E0)
 
             val path = Path().apply {
                 moveTo(size.width / 2, size.height - 4f)  // Bottom center (pointer tip)

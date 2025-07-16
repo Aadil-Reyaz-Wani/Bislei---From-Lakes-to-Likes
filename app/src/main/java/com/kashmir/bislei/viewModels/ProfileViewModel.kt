@@ -54,7 +54,7 @@ class ProfileViewModel : ViewModel() {
             .orderBy("timestamp", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
-                    Log.e("Firestore", "Listen failed: ${error.message}")
+                    Log.e("FireStore", "Listen failed: ${error.message}")
                     return@addSnapshotListener
                 }
 
@@ -110,10 +110,6 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
-    fun uploadProfileData(profile: UserProfile) {
-        val uid = auth.currentUser?.uid ?: return
-        db.collection("users").document(uid).set(profile)
-    }
 
     suspend fun uploadPost(imageUri: Uri, caption: String = ""): Boolean {
         val uid = auth.currentUser?.uid ?: return false
@@ -173,12 +169,6 @@ class ProfileViewModel : ViewModel() {
                     onComplete(false)
                 }
             }
-        }
-    }
-
-    fun refreshUserPosts(onFinished: () -> Unit) {
-        viewModelScope.launch {
-            forceRefreshUserPosts(onFinished)
         }
     }
 

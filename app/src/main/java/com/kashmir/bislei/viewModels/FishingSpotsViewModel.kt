@@ -1,4 +1,4 @@
-package com.kashmir.bislei.viewmodel
+package com.kashmir.bislei.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

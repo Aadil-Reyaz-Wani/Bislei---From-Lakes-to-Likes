@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.kashmir.bislei.navigation.screenroutes.BottomNavItem
-import com.kashmir.bislei.screens.detailScreens.PostFeedScreen
+import com.kashmir.bislei.screens.detailsScreens.PostFeedScreen
 import com.kashmir.bislei.screens.exploreScreens.ExploreScreen
 import com.kashmir.bislei.screens.feedScreens.HomeScreen
 import com.kashmir.bislei.screens.profileScreens.EditProfileFieldsScreen

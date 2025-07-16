@@ -1,4 +1,4 @@
-package com.kashmir.bislei.additionals
+package com.kashmir.bislei.components.locationMarkerComponents
 
 import android.content.Context
 import android.graphics.Bitmap

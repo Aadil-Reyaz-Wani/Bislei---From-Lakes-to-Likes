@@ -1,4 +1,4 @@
-package com.kashmir.bislei.smallComposables
+package com.kashmir.bislei.components
 
 
 import androidx.compose.foundation.layout.statusBarsPadding

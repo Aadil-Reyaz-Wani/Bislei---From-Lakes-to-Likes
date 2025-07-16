@@ -50,7 +50,6 @@ fun PostCard(
 
     var showCommentSheet by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val scope = rememberCoroutineScope()
 
     val userProfilesMap by postInteractionViewModel.userProfilesMap.collectAsState()
     val uploaderProfile = userProfilesMap[post.userId]
@@ -88,177 +87,319 @@ fun PostCard(
         Column(
             modifier = Modifier.padding(Dimensions.contentPadding)
         ) {
-            // Uploader Info Section
+            // Header Row with Uploader Info and Menu
             if (uploaderProfile != null) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = Dimensions.spaceS)
-                ) {
-                    AsyncImage(
-                        model = uploaderProfile.profileImageUrl,
-                        contentDescription = "Uploader Profile Image",
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(MaterialTheme.shapes.small),
-                        contentScale = ContentScale.Crop
-                    )
-                    Spacer(modifier = Modifier.width(Dimensions.spaceS))
-                    Text(
-                        text = uploaderProfile.name,
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-
-            // Header Row
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
+                        .padding(bottom = Dimensions.spaceM),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.Outlined.LocationOn,
-                        contentDescription = null,
-                        modifier = Modifier.size(Dimensions.iconSizeSmall),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                    Spacer(modifier = Modifier.width(Dimensions.spaceXS))
-                    Text(
-                        text = "Dal Lake, Srinagar",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-
-                Box {
-                    FilledTonalIconButton(
-                        onClick = {
-                            showMenu = !showMenu
-                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                        }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            Icons.Default.MoreVert,
-                            contentDescription = "Menu",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        AsyncImage(
+                            model = uploaderProfile.profileImageUrl,
+                            contentDescription = "Uploader Profile Image",
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(MaterialTheme.shapes.small),
+                            contentScale = ContentScale.Crop
                         )
+                        Spacer(modifier = Modifier.width(Dimensions.spaceS))
+                        Column {
+                            Text(
+                                text = uploaderProfile.name,
+                                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.LocationOn,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(Dimensions.iconSizeSmall),
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                                Spacer(modifier = Modifier.width(Dimensions.spaceXXS))
+                                Text(
+                                    text = "Dal Lake, Srinagar",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
                     }
 
-                    DropdownMenu(
-                        expanded = showMenu,
-                        onDismissRequest = { showMenu = false },
-                        modifier = Modifier.width(180.dp)
-                    ) {
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    "Copy URL",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            },
+                    Box {
+                        FilledTonalIconButton(
                             onClick = {
-                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                val clip = ClipData.newPlainText("Post URL", post.imageUrl)
-                                clipboard.setPrimaryClip(clip)
-                                Toast.makeText(context, "URL copied", Toast.LENGTH_SHORT).show()
-                                showMenu = false
+                                showMenu = !showMenu
                                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Outlined.ContentCopy,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
                             }
-                        )
+                        ) {
+                            Icon(
+                                Icons.Default.MoreVert,
+                                contentDescription = "Menu",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
 
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    "Save",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            },
-                            onClick = {
-                                showMenu = false
-                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Outlined.BookmarkBorder,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        )
-
-                        DropdownMenuItem(
-                            text = {
-                                Text(
-                                    "Download",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                            },
-                            onClick = {
-                                showMenu = false
-                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                            },
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Outlined.Download,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        )
-
-                        // Conditionally show Delete
-                        if (showDeleteOption) {
-                            HorizontalDivider(
-                                modifier = Modifier.padding(vertical = Dimensions.spaceXS)
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false },
+                            modifier = Modifier.width(180.dp)
+                        ) {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        "Copy URL",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                },
+                                onClick = {
+                                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                    val clip = ClipData.newPlainText("Post URL", post.imageUrl)
+                                    clipboard.setPrimaryClip(clip)
+                                    Toast.makeText(context, "URL copied", Toast.LENGTH_SHORT).show()
+                                    showMenu = false
+                                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Outlined.ContentCopy,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
                             )
 
                             DropdownMenuItem(
                                 text = {
                                     Text(
-                                        "Delete",
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.error
+                                        "Save",
+                                        style = MaterialTheme.typography.bodyMedium
                                     )
                                 },
                                 onClick = {
                                     showMenu = false
                                     hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                                    profileViewModel.deletePost(post) { success ->
-                                        Toast.makeText(
-                                            context,
-                                            if (success) "Post deleted" else "Failed to delete",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        if (success) onPostDeleted()
-                                    }
                                 },
                                 leadingIcon = {
                                     Icon(
-                                        Icons.Outlined.Delete,
+                                        Icons.Outlined.BookmarkBorder,
                                         contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.error
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 }
                             )
+
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        "Download",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                },
+                                onClick = {
+                                    showMenu = false
+                                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Outlined.Download,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            )
+
+                            // Conditionally show Delete
+                            if (showDeleteOption) {
+                                HorizontalDivider(
+                                    modifier = Modifier.padding(vertical = Dimensions.spaceXS)
+                                )
+
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            "Delete",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.error
+                                        )
+                                    },
+                                    onClick = {
+                                        showMenu = false
+                                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                        profileViewModel.deletePost(post) { success ->
+                                            Toast.makeText(
+                                                context,
+                                                if (success) "Post deleted" else "Failed to delete",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            if (success) onPostDeleted()
+                                        }
+                                    },
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Outlined.Delete,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.error
+                                        )
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            } else {
+                // Fallback header when no uploader profile
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.LocationOn,
+                            contentDescription = null,
+                            modifier = Modifier.size(Dimensions.iconSizeSmall),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(Dimensions.spaceXS))
+                        Text(
+                            text = "Dal Lake, Srinagar",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+
+                    Box {
+                        FilledTonalIconButton(
+                            onClick = {
+                                showMenu = !showMenu
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                            }
+                        ) {
+                            Icon(
+                                Icons.Default.MoreVert,
+                                contentDescription = "Menu",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false },
+                            modifier = Modifier.width(180.dp)
+                        ) {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        "Copy URL",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                },
+                                onClick = {
+                                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                    val clip = ClipData.newPlainText("Post URL", post.imageUrl)
+                                    clipboard.setPrimaryClip(clip)
+                                    Toast.makeText(context, "URL copied", Toast.LENGTH_SHORT).show()
+                                    showMenu = false
+                                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Outlined.ContentCopy,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            )
+
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        "Save",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                },
+                                onClick = {
+                                    showMenu = false
+                                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Outlined.BookmarkBorder,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            )
+
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        "Download",
+                                        style = MaterialTheme.typography.bodyMedium
+                                    )
+                                },
+                                onClick = {
+                                    showMenu = false
+                                    hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        Icons.Outlined.Download,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            )
+
+                            // Conditionally show Delete
+                            if (showDeleteOption) {
+                                HorizontalDivider(
+                                    modifier = Modifier.padding(vertical = Dimensions.spaceXS)
+                                )
+
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(
+                                            "Delete",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.error
+                                        )
+                                    },
+                                    onClick = {
+                                        showMenu = false
+                                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                        profileViewModel.deletePost(post) { success ->
+                                            Toast.makeText(
+                                                context,
+                                                if (success) "Post deleted" else "Failed to delete",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            if (success) onPostDeleted()
+                                        }
+                                    },
+                                    leadingIcon = {
+                                        Icon(
+                                            Icons.Outlined.Delete,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.error
+                                        )
+                                    }
+                                )
+                            }
                         }
                     }
                 }
             }
-
-            Spacer(modifier = Modifier.height(Dimensions.spaceM))
 
             // Post Image
             Card(
@@ -344,7 +485,7 @@ fun PostCard(
                     shape = MaterialTheme.shapes.medium
                 ) {
                     ExpandableCaption(
-                        caption = post.caption!!,
+                        caption = post.caption,
                         modifier = Modifier.padding(Dimensions.spaceM)
                     )
                 }
@@ -359,7 +500,7 @@ fun ExpandableCaption(
     modifier: Modifier = Modifier
 ) {
     var isExpanded by remember { mutableStateOf(false) }
-    val maxChars = 100 // Approximate for 2 lines
+    val maxChars = 100
     val primaryColor = MaterialTheme.colorScheme.primary
 
     val shouldTruncate = caption.length > maxChars

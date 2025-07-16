@@ -11,13 +11,12 @@ import com.kashmir.bislei.screens.authScreens.RegisterScreen
 import com.kashmir.bislei.screens.authScreens.ResetPasswordScreen
 
 @Composable
-fun NavigationGraph(navController: NavHostController, isUserLoggedIn: Boolean) {
+fun NavigationGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = AuthScreens.Splash.route) {
 
         composable(AuthScreens.Splash.route) {
             SplashScreen(
-                navController = navController,
-                isUserLoggedIn = isUserLoggedIn
+                navController = navController
             )
         }
 
@@ -51,13 +50,6 @@ fun NavigationGraph(navController: NavHostController, isUserLoggedIn: Boolean) {
         }
 
         composable(AuthScreens.Home.route) {
-//            HomeScreen(
-//                onLogout = {
-//                    navController.navigate(Screens.Login.route) {
-//                        popUpTo(Screens.Home.route) { inclusive = true }
-//                    }
-//                }
-//            )
             MainScreen(
                 onLogout = {
                     navController.navigate(AuthScreens.Login.route) {

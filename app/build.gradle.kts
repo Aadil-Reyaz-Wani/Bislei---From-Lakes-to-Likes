@@ -26,7 +26,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -102,8 +102,8 @@ dependencies {
     implementation(libs.androidx.storage)
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-compiler:2.48")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     // Testing
     testImplementation(libs.junit)
@@ -118,9 +118,7 @@ dependencies {
     implementation(libs.play.services.maps.v1700)
     implementation(libs.play.services.location.v1700)
 
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.30.1")
-
-
+    implementation(libs.accompanist.swiperefresh)
 
 
 

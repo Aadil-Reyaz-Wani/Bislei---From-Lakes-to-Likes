@@ -33,13 +33,13 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import com.kashmir.bislei.additionals.CustomMarkerWithBadge
-import com.kashmir.bislei.components.MarkerInfoCard
+import com.kashmir.bislei.components.locationMarkerComponents.CustomMarkerWithBadge
+import com.kashmir.bislei.components.locationMarkerComponents.MarkerInfoCard
 import com.kashmir.bislei.model.FishingSpot
-import com.kashmir.bislei.smallComposables.BisleiTopAppBar
+import com.kashmir.bislei.components.BisleiTopAppBar
 import com.kashmir.bislei.ui.theme.Dimensions
 import com.kashmir.bislei.viewModels.LocationViewModel
-import com.kashmir.bislei.viewmodel.FishingSpotsViewModel
+import com.kashmir.bislei.viewModels.FishingSpotsViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)

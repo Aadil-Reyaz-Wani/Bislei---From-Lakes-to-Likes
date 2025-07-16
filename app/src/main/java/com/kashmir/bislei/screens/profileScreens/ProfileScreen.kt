@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
@@ -25,6 +24,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.material.icons.automirrored.outlined.ExitToApp
+import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import coil.compose.AsyncImage
@@ -34,10 +35,10 @@ import com.kashmir.bislei.viewModels.ProfileViewModel
 import java.text.SimpleDateFormat
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.kashmir.bislei.smallComposables.BisleiTopAppBar
+import com.google.firebase.auth.FirebaseAuth
+import com.kashmir.bislei.components.BisleiTopAppBar
 import java.util.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     onNavigateBack: () -> Unit = {},
@@ -123,7 +124,7 @@ fun ProfileScreen(
                                     modifier = Modifier.weight(1f)
                                 ) {
                                     Card(
-                                        shape = CircleShape,
+                                        shape = MaterialTheme.shapes.medium,
                                         elevation = CardDefaults.cardElevation(
                                             defaultElevation = 2.dp
                                         )
@@ -134,11 +135,11 @@ fun ProfileScreen(
                                             contentDescription = "Profile Image",
                                             modifier = Modifier
                                                 .size(80.dp)
-                                                .clip(CircleShape)
+                                                .clip(MaterialTheme.shapes.medium)
                                                 .border(
                                                     width = 3.dp,
                                                     color = MaterialTheme.colorScheme.primary,
-                                                    shape = CircleShape
+                                                    shape = MaterialTheme.shapes.medium
                                                 ),
                                             contentScale = ContentScale.Crop
                                         )
@@ -231,7 +232,7 @@ fun ProfileScreen(
                                             },
                                             leadingIcon = {
                                                 Icon(
-                                                    Icons.Outlined.HelpOutline,
+                                                    Icons.AutoMirrored.Outlined.HelpOutline,
                                                     contentDescription = null,
                                                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                                                 )
@@ -253,11 +254,12 @@ fun ProfileScreen(
                                             onClick = {
                                                 expanded = false
                                                 hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                                FirebaseAuth.getInstance().signOut()
                                                 onLogout()
                                             },
                                             leadingIcon = {
                                                 Icon(
-                                                    Icons.Outlined.ExitToApp,
+                                                    Icons.AutoMirrored.Outlined.ExitToApp,
                                                     contentDescription = null,
                                                     tint = MaterialTheme.colorScheme.error
                                                 )

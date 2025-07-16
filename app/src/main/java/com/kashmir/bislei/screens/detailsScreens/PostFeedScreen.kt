@@ -1,4 +1,4 @@
-package com.kashmir.bislei.screens.detailScreens
+package com.kashmir.bislei.screens.detailsScreens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,13 +14,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.kashmir.bislei.model.Post
 import com.kashmir.bislei.screens.profileScreens.PostCard
-import com.kashmir.bislei.smallComposables.BisleiTopAppBar
+import com.kashmir.bislei.components.BisleiTopAppBar
 import com.kashmir.bislei.ui.theme.Dimensions
 import com.kashmir.bislei.viewModels.PostInteractionViewModel
 import com.kashmir.bislei.viewModels.ProfileViewModel
 import kotlinx.coroutines.delay
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun PostFeedScreen(
     navController: NavHostController,
