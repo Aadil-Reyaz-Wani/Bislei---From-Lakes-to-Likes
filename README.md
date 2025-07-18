@@ -13,4 +13,4 @@ Version: 1.0.4 | Size: 24.2 MB
 - Smooth UI powered by Jetpack Compose
 
 ## 👨‍💻 Connect
-[LinkedIn](https://www.linkedin.com/in/aadilreyazwani/) · [Instagram](https://www.instagram.com/codebyaadil/) · [GitHub](https://github.com/Aadil-Reyaz-Wani) · [X](https://x.com/_aadil_114)
+[LinkedIn](https://www.linkedin.com/in/aadilreyazwani/) · [Instagram](https://www.instagram.com/codebyaadil/) · [GitHub](https://github.com/Aadil-Reyaz-Wani) · [X[Twitter]](https://x.com/_aadil_114)
