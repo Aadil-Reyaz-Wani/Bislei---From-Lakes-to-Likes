@@ -6,11 +6,11 @@ Bislei is a social fishing and nature exploration app built using Jetpack Compos
 Last updated: July 16, 2025  
 Version: 1.0.4 | Size: 24.2 MB
 
-## 🔧 Features
+## 🛠️ Features
 - Upload & share your fishing experiences
 - View fishing hotspots
 - Smart splash, login/logout handling
 - Smooth UI powered by Jetpack Compose
 
-## 🔗 Connect
+## 👨‍💻 Connect
 [LinkedIn](https://www.linkedin.com/in/aadilreyazwani/) · [Instagram](https://www.instagram.com/codebyaadil/) · [GitHub](https://github.com/Aadil-Reyaz-Wani)
