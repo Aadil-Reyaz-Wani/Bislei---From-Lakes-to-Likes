@@ -1,0 +1,30 @@
+{
+  "name": "fish_identifier",
+  "description": "A TensorFlow Lite model that identifies 6 species of fish from images.",
+  "version": "1.0",
+  "author": "Team X",
+  "license": "Apache-2.0",
+  "input": [
+    {
+      "name": "image",
+      "description": "Input image with RGB channels, size 256x256",
+      "data_type": "float32",
+      "shape": [1, 256, 256, 3],
+      "normalization": {
+        "mean": [0.0, 0.0, 0.0],
+        "std": [1.0, 1.0, 1.0],
+        "range": [0, 1]
+      }
+    }
+  ],
+  "output": [
+    {
+      "name": "probabilities",
+      "description": "Softmax class probabilities for 6 fish species",
+      "data_type": "float32",
+      "shape": [1, 6],
+      "associated_files": ["labels.txt"]
+    }
+  ],
+  "tags": ["fish", "image-classification", "aquatic"]
+}

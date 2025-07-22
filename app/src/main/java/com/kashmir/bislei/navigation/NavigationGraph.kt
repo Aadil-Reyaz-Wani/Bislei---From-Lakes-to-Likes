@@ -1,9 +1,13 @@
 package com.kashmir.bislei.navigation
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.google.firebase.auth.FirebaseAuth
 import com.kashmir.bislei.navigation.screenroutes.AuthScreens
 import com.kashmir.bislei.screens.*
 import com.kashmir.bislei.screens.authScreens.LoginScreen
@@ -16,7 +20,18 @@ fun NavigationGraph(navController: NavHostController) {
 
         composable(AuthScreens.Splash.route) {
             SplashScreen(
-                navController = navController
+                onSplashComplete = {
+                    val isUserLoggedIn = FirebaseAuth.getInstance().currentUser != null
+                    if (isUserLoggedIn) {
+                        navController.navigate(AuthScreens.Home.route) {
+                            popUpTo(AuthScreens.Splash.route) { inclusive = true }
+                        }
+                    } else {
+                        navController.navigate(AuthScreens.Login.route) {
+                            popUpTo(AuthScreens.Splash.route) { inclusive = true }
+                        }
+                    }
+                }
             )
         }
 

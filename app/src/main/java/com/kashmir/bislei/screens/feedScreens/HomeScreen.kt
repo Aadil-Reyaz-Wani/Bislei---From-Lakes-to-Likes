@@ -7,10 +7,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import coil.size.Dimension
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.kashmir.bislei.screens.profileScreens.PostCard
 import com.kashmir.bislei.components.BisleiTopAppBar
+import com.kashmir.bislei.ui.theme.Dimensions
 import com.kashmir.bislei.viewModels.FeedViewModel
 import com.kashmir.bislei.viewModels.PostInteractionViewModel
 import com.kashmir.bislei.viewModels.ProfileViewModel
@@ -31,25 +33,27 @@ fun HomeScreen(
         topBar = {
             BisleiTopAppBar(
                 title = "Bislei",
-//                onNavigateBack = onNavigateBack
+                showLogo = true
             )
         },
         containerColor = MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = Modifier
+                .padding(vertical = Dimensions.spaceS)
         ) {
             SwipeRefresh(
                 state = swipeRefreshState,
                 onRefresh = {
                     refreshing = true
-                    // Optional manual refresh logic if needed
                     refreshing = false
-                }
+                },
+
             ) {
                 LazyColumn(
                     contentPadding = it,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+
                 ) {
                     items(posts) { post ->
                         PostCard(

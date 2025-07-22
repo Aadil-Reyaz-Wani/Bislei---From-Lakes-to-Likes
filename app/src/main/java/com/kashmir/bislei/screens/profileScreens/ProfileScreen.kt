@@ -58,6 +58,8 @@ fun ProfileScreen(
 
     var isRefreshing by remember { mutableStateOf(false) }
 
+    val insets = WindowInsets.systemBars.asPaddingValues()
+
     fun formatDate(timestamp: Long): String {
         return try {
             val sdf = SimpleDateFormat("MMM yyyy", Locale.getDefault())
@@ -84,7 +86,7 @@ fun ProfileScreen(
                 viewModel.forceRefreshUserPosts {
                     isRefreshing = false
                 }
-            }
+            },
         ) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),

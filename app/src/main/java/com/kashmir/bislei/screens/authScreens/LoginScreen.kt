@@ -2,6 +2,7 @@ package com.kashmir.bislei.screens.authScreens
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,13 +17,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kashmir.bislei.R
 import com.kashmir.bislei.ui.theme.Dimensions
 import com.kashmir.bislei.viewModels.AuthViewModel
 import kotlinx.coroutines.delay
@@ -44,6 +48,15 @@ fun LoginScreen(
     var isFormValid by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
+
+
+    val isDarkTheme = isSystemInDarkTheme()
+    val logoTint = if (isDarkTheme) {
+        MaterialTheme.colorScheme.onBackground
+    }else {
+        MaterialTheme.colorScheme.onBackground
+    }
+
 
     // Form validation
     LaunchedEffect(email, password) {
@@ -112,10 +125,10 @@ fun LoginScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Waves,
+                        painter = painterResource(R.drawable.bislei_logo),
                         contentDescription = "Bislei Logo",
-                        modifier = Modifier.size(64.dp),
-                        tint = MaterialTheme.colorScheme.primary
+                        modifier = Modifier.size(120.dp),
+                        tint = logoTint
                     )
                 }
             }

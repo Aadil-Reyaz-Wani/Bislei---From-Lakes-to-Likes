@@ -89,51 +89,36 @@ fun ExploreScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            BisleiTopAppBar(
-                title = "Explore",
-                onNavigateBack = onNavigateBack
-            )
-        },
-        floatingActionButton = {
-            if (permissionsState.allPermissionsGranted) {
-                FloatingActionButton(
-                    onClick = {
-                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                        currentLocation?.let {
-                            coroutineScope.launch {
-                                cameraPositionState.animate(
-                                    CameraUpdateFactory.newLatLngZoom(it, 15f)
-                                )
-                            }
-                        }
-                    },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    shape = MaterialTheme.shapes.large
-                ) {
-                    Icon(
-                        Icons.Default.MyLocation,
-                        contentDescription = "My Location",
-                        modifier = Modifier.size(Dimensions.iconSize)
-                    )
-                }
-            }
-        },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { paddingValues ->
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // Top App Bar
+        BisleiTopAppBar(
+            title = "Explore",
+            onNavigateBack = onNavigateBack
+        )
+
+        // Map Content with FAB
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+            modifier = Modifier.fillMaxSize()
         ) {
             if (permissionsState.allPermissionsGranted) {
                 GoogleMap(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 80.dp),
+                    modifier = Modifier.fillMaxSize(),
                     cameraPositionState = cameraPositionState,
+                    properties = MapProperties(
+                        isMyLocationEnabled = true
+                    ),
+                    uiSettings = MapUiSettings(
+                        compassEnabled = true,
+                        zoomControlsEnabled = true,
+                        myLocationButtonEnabled = true,
+                        mapToolbarEnabled = true,
+                        tiltGesturesEnabled = true,
+                        rotationGesturesEnabled = true,
+                        scrollGesturesEnabled = true,
+                        zoomGesturesEnabled = true
+                    ),
                     onMapLoaded = { isMapLoaded = true }
                 ) {
                     fishingSpots.forEach { spot ->
@@ -149,6 +134,33 @@ fun ExploreScreen(
                         )
                     }
                 }
+
+                // FAB positioned higher to avoid Google Maps controls
+//                FloatingActionButton(
+//                    onClick = {
+//                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+//                        currentLocation?.let {
+//                            coroutineScope.launch {
+//                                cameraPositionState.animate(
+//                                    CameraUpdateFactory.newLatLngZoom(it, 15f)
+//                                )
+//                            }
+//                        }
+//                    },
+//                    containerColor = MaterialTheme.colorScheme.primary,
+//                    contentColor = MaterialTheme.colorScheme.onPrimary,
+//                    shape = MaterialTheme.shapes.large,
+//                    modifier = Modifier
+//                        .align(Alignment.CenterEnd)
+//                        .padding(end = Dimensions.screenPadding)
+//                        .offset(y = (-80).dp)
+//                ) {
+//                    Icon(
+//                        Icons.Default.MyLocation,
+//                        contentDescription = "My Location",
+//                        modifier = Modifier.size(Dimensions.iconSize)
+//                    )
+//                }
 
                 // Only show additional marker info if map is loaded and a spot is selected
                 if (isMapLoaded && selectedSpot != null) {

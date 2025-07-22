@@ -6,8 +6,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
-    id("dagger.hilt.android.plugin") // Added Hilt plugin
-    id("org.jetbrains.kotlin.kapt") // Required for Hilt compiler
+    id("dagger.hilt.android.plugin")
+    id("org.jetbrains.kotlin.kapt")
     id("kotlin-parcelize")
 }
 
@@ -26,7 +26,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0.3"
+        versionName = "1.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -103,7 +103,15 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.runner)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.litert.support.api)
     kapt(libs.hilt.compiler)
+
+    // KEEP THESE: Firebase ML Kit
+    implementation("com.google.mlkit:image-labeling-custom:17.0.1")
+    implementation(libs.firebase.ml.modeldownloader)
 
     // Testing
     testImplementation(libs.junit)
@@ -114,12 +122,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Material & Maps
     implementation(libs.material3)
     implementation(libs.play.services.maps.v1700)
     implementation(libs.play.services.location.v1700)
 
+    // Accompanist
     implementation(libs.accompanist.swiperefresh)
-
-
-
 }
